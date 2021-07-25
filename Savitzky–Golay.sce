@@ -1,4 +1,9 @@
 function Y = Filtro_SG(janela, grau, dados_x, dados_y)
+    //Função responsável por aplicar o filtro nos dados
+    //Verifica se os dados são adequados para as condições do filtro e 
+    //calcula os coeficientes com base no grau e janela escolhidos,
+    //na versão atual um set de n pontos, aplicados a um filtro com
+    //janela m, resulta em um set de n-m+1 pontos.
     
     if Verificar_caso(dados_x) == 1 then
         disp('O espaçamento em x não é constante')
@@ -6,19 +11,20 @@ function Y = Filtro_SG(janela, grau, dados_x, dados_y)
         resume
     end
     
-    n = (janela - 1)/2
-    n_pts = size(dados_x)(1)
-    i_ini = 1 + n
-    i_fin = n_pts - n
+    n = (janela - 1)/2       //Pontos ao redor do centro
+    n_pts = size(dados_x)(1) //Quantidade de pontos nos dados
+    i_ini = 1 + n            //Indice inicial
+    i_fin = n_pts - n        //Indice final
     
-    h = Mudanca_variavel(janela)
+    //Calculando os coeficientes:
+    h = Mudanca_variavel(janela) //Mudança de var. p/ calc. dos coef.
     J = Vandermonde(h, grau)
     C = inv(J'*J)*J'
-    a0 = C(1,:)
+    a0 = C(1,:)                 //Somente a0 é utilizado no filtro
     
     Y = dados_y(i_ini:i_fin)
     
-     
+     //Aplicando o filtro:
     for i=i_ini:i_fin
         Y(i-n) = a0*dados_y(i-n:i+n)
     end
@@ -63,8 +69,12 @@ function resp = Verificar_caso(vetor_x)
 endfunction
 
 function h = Mudanca_variavel(m)
+    //Realiza a mudança de variável necessária p/ encontrar os
+    //coeficientes do polinômio do filtro
+    //z = (x-xcentro)/h -- h é o espaçamento
+    
     if modulo(m, 2) == 0 then
-        disp('A janela de ponto deve ser um número ímpar.')
+        disp('A janela de pontos deve ser um número ímpar.')
         h = 0
         resume
     else
