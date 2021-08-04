@@ -42,7 +42,10 @@ function D = Abrir()
     //Abre a caixa de diálogo p/ escolha do arquivo a ser lido e 
     //retorna os dados limpos
     [Nome, Path] = uigetfile(["*.xls";"*.csv"],pwd(),'Abrir')
-    
+    if Nome == '' then
+        D=0
+        resume
+    end
     i_ponto = strindex(Nome, '.')
     tipo = strsplit(Nome, i_ponto)(2)
     if tipo == 'xls' then
