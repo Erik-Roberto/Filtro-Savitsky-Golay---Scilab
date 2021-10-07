@@ -62,7 +62,10 @@ function Y = Filtro_SG(janela, grau, dados_x, dados_y, ordem, bordas)
         Y(i_fin+1:i_fin+n) = Yfin
     
     elseif bordas == 'F' then
-        Y = Ycentro
+        Y(1:n) = 0
+        Y(i_ini:i_fin) = Ycentro
+        Y(i_fin+1:i_fin+n) = 0
+        
     else
         disp('Opção inválida, devem ser Verdadeira (T) ou Falsa: (F).')
         disp('Retornando valores sem considerar a borda.')
